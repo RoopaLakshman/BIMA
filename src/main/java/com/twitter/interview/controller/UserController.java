@@ -129,12 +129,10 @@ public class UserController {
 			}
 		}		
 		
-		Collections.sort(chronologyTweets, new ChronologyComparator());
+		//Collections.sort(chronologyTweets, new ChronologyComparator());
 		Collections.sort(topTweets, new RelatedTweetsComparator());
 		
 		Collections.reverse(topTweets);
-		Collections.reverse(chronologyTweets);
-		
 		topTweets.addAll(chronologyTweets);
 		
 		return topTweets;

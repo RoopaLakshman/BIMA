@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 					"	left outer join favourite_tweets ft on ft.tweet_id = t.tweet_id " + 
 					"	left outer join retweets rt on rt.tweet_id = t.tweet_id " + 
 					"	where u.user_id = :id" + 
-					"	group by t.tweet_id order by favcount desc", nativeQuery = true)
+					"	group by t.tweet_id order by timestamp desc", nativeQuery = true)
 	public ArrayList<RelatedTweets> getRelatedTweets(long id);
 	
 
