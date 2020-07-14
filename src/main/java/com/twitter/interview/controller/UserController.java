@@ -100,7 +100,7 @@ public class UserController {
 		}
 	}
 
-	// Get Timeline feed
+	// Get Timeline feeds
 	@GetMapping(path = "/user/{user_id}/load/usertimeline")
 	public List<RelatedTweets> loadUserTimeline(@PathVariable("user_id") long id) {
 		Optional<User> follower = userRepository.findById(id);
