@@ -1,1 +1,1 @@
-# BIMS
+# BIMA
