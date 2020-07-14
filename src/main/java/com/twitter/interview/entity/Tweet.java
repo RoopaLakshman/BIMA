@@ -1,6 +1,5 @@
 package com.twitter.interview.entity;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class Tweet {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long tweetId;
 
 	private String tweet;

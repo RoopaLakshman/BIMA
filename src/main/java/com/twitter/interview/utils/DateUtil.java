@@ -1,4 +1,4 @@
-package com.twitter.interview.webservices;
+package com.twitter.interview.utils;
 
 import java.util.Date;
 

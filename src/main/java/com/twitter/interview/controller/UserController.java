@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.twitter.interview.comparator.ChronologyComparator;
+import com.twitter.interview.comparator.RelatedTweetsComparator;
 import com.twitter.interview.entity.User;
 import com.twitter.interview.exception.NotFoundException;
 import com.twitter.interview.model.RelatedTweets;
 import com.twitter.interview.model.UserVo;
 import com.twitter.interview.repository.UserRepository;
+import com.twitter.interview.utils.DateUtil;
 
 @RestController
 public class UserController {
@@ -108,10 +112,32 @@ public class UserController {
 			throw new NotFoundException(new Date(), "Follower by ID " + follower + " user is not found",
 					"Resource not found");
 		}
+		
 		List<RelatedTweets> relatedTweets  = new ArrayList<RelatedTweets>();
 		relatedTweets = userRepository.getRelatedTweets(id);
-		Collections.sort(relatedTweets, new RelatedTweets());
-		return relatedTweets;
+		
+		List<RelatedTweets> topTweets  = new ArrayList<RelatedTweets>();
+		List<RelatedTweets> chronologyTweets  = new ArrayList<RelatedTweets>();
+		
+		Iterator<RelatedTweets> iterator = relatedTweets.iterator();
+		while(iterator.hasNext()) {
+			RelatedTweets t = iterator.next();
+			if(DateUtil.inLastDay(t.getTimestamp())) {
+				topTweets.add(t);
+			} else {
+				chronologyTweets.add(t);
+			}
+		}		
+		
+		Collections.sort(chronologyTweets, new ChronologyComparator());
+		Collections.sort(topTweets, new RelatedTweetsComparator());
+		
+		Collections.reverse(topTweets);
+		Collections.reverse(chronologyTweets);
+		
+		topTweets.addAll(chronologyTweets);
+		
+		return topTweets;
 	}
 
 	public UserRepository getUserRepository() {
